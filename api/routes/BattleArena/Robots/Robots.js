@@ -4,7 +4,16 @@ const { Types } = require("mongoose");
 module.exports = function Robots(model = RobotsModel) {
   const robots = {};
 
-  robots.find = (data, cb) => {};
+  robots.find = ({ _id }, cb) => {
+    const data = _id ? { _id } : null;
+    model
+      .find(data)
+      .then((robot_data) => {
+        if (robot_data) cb(null, { robot_data, status: 200 });
+        else cb({ message: "robot_data not found", status: 404 });
+      })
+      .catch((error) => cb(error));
+  };
 
   robots.add = (data, cb) => {
     new model({ _id: Types.ObjectId(), ...data })
