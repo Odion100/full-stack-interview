@@ -33,6 +33,12 @@ const RobotsTable = () => {
     updateRobotData(data);
   };
 
+  const updateRow = (i, prop_name, e) => {
+    console.log(robot_data, i, prop_name);
+    const updated_data = [...robot_data];
+    console.log("updated_data", updated_data, i, prop_name);
+    updated_data[i][prop_name] = e.target.value;
+  };
   useEffect(() => {
     getRobots();
   }, []);
@@ -55,40 +61,19 @@ const RobotsTable = () => {
         </tr>
       </thead>
       <tbody>
-        {robot_data.map((robot, i) =>
-          robot.edit_mode ? (
-            <TableRowEditor {...robot} saveRobot={saveRobot} key={i} />
-          ) : (
-            <TableRow {...robot} key={i} />
-          )
-        )}
+        {robot_data.map((robot, i) => (
+          <TableRowEditor {...robot} saveRobot={saveRobot} updateRow={updateRow} i={i} key={i} />
+        ))}
       </tbody>
     </table>
   );
 };
 
-const TableRow = ({ name, color, attacks, defence, image, i }) => (
-  <tr key={i}>
-    <td>{name}</td>
-    <td>{color}</td>
-    <td>
-      {attacks.map(({ name, points }, i) => (
-        <div key={i}>
-          <span>{name}</span>:<span>{points}</span>
-        </div>
-      ))}
-    </td>
-    <td>{defence}</td>
-    <td>
-      <img src={image} alt="Robot" />
-    </td>
-  </tr>
-);
-const TableRowEditor = ({ name, color, attacks, defence, image, i, saveRobot }) => {
+const TableRowEditor = ({ name, color, attacks, defence, image, i, saveRobot, updateRow }) => {
   color = color || color_options[0];
   return (
     <tr key={i}>
-      <td>{<Textbox />}</td>
+      <td>{<Textbox defaultText={name} onchange={updateRow.bind(this, i, "name")} />}</td>
       <td>
         <Selector
           options={color_options}
