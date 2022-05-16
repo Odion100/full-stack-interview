@@ -10,7 +10,7 @@ const RobotsTable = () => {
   const [robot_data, updateRobotData] = useState([]);
 
   const getRobots = () => {
-    request({ url: "http://localhost:3001/robots" }, (err, res, body) => {
+    request({ url: "http://localhost:3001/robots", json: true }, (err, res, body) => {
       if (err) console.log(err);
       else if (res.statusCode >= 400) console.log(body);
       else updateRobotData(body.robot_data || []);
@@ -18,27 +18,41 @@ const RobotsTable = () => {
     });
   };
   const saveRobot = (i, e) => {
+    console.log(robot_data[i]);
     request(
-      { url: "http://localhost:3001/robots", method: "PUT", body: robot_data[i] },
+      { url: "http://localhost:3001/robots", method: "PUT", body: robot_data[i], json: true },
       (err, res, body) => {
         if (err) console.log(err);
         else if (res.statusCode >= 400) console.log(body);
-        else updateRobotData(body.robot_data || []);
+        else getRobots();
+
         console.log(body);
       }
     );
   };
   const addRow = () => {
-    const data = [{ edit_mode: true, attacks: [], defence: 1000 }, ...robot_data];
+    const data = robot_data.splice(0);
+    data.push({
+      edit_mode: true,
+      attacks: attack_options.filter((attack) => attack.color === "red"),
+      defense: 1000,
+      color: "red",
+    });
     updateRobotData(data);
   };
 
-  const updateRow = (i, prop_name, e) => {
-    console.log(robot_data, i, prop_name);
-    const updated_data = [...robot_data];
-    console.log("updated_data", updated_data, i, prop_name);
-    updated_data[i][prop_name] = e.target.value;
+  const updateName = (i, e) => {
+    const updated_data = robot_data.splice(0);
+    updated_data[i].name = e.target.value;
+    updateRobotData(updated_data);
   };
+  const updateColor = (i, e) => {
+    const updated_data = robot_data.splice(0);
+    updated_data[i].color = e.target.value;
+    updated_data[i].attacks = attack_options.filter((attack) => attack.color === e.target.value);
+    updateRobotData(updated_data);
+  };
+
   useEffect(() => {
     getRobots();
   }, []);
@@ -47,7 +61,7 @@ const RobotsTable = () => {
     { name: "Name" },
     { name: "Color" },
     { name: "Attacks" },
-    { name: "Defence" },
+    { name: "Defense" },
     { name: <Button submit={addRow}>Add Robot</Button> },
   ];
   console.log("robot data", robot_data);
@@ -62,42 +76,57 @@ const RobotsTable = () => {
       </thead>
       <tbody>
         {robot_data.map((robot, i) => (
-          <TableRowEditor {...robot} saveRobot={saveRobot} updateRow={updateRow} i={i} key={i} />
+          <TableRowEditor
+            {...robot}
+            saveRobot={saveRobot}
+            updateName={updateName}
+            updateColor={updateColor}
+            i={i}
+            key={i}
+          />
         ))}
       </tbody>
     </table>
   );
 };
 
-const TableRowEditor = ({ name, color, attacks, defence, image, i, saveRobot, updateRow }) => {
+const TableRowEditor = ({
+  name,
+  color,
+  attacks,
+  defense,
+  image,
+  i,
+  saveRobot,
+  updateName,
+  updateColor,
+}) => {
   color = color || color_options[0];
   return (
     <tr key={i}>
-      <td>{<Textbox defaultText={name} onchange={updateRow.bind(this, i, "name")} />}</td>
+      <td>{<Textbox defaultText={name} onchange={updateName.bind(this, i)} />}</td>
       <td>
         <Selector
           options={color_options}
           selected_option={color}
-          onSelect={saveRobot.bind(this, i, 1)}
+          onSelect={updateColor.bind(this, i)}
         />
       </td>
       <td>
-        {attack_options
-          .filter((attack) => attack.color === color)
-          .map(({ name, points }, i) => (
-            <div key={i}>
-              <span>{name}</span>:<span>{points}</span>
-            </div>
-          ))}
+        {attacks.map(({ name, points }, i) => (
+          <div key={i}>
+            <span>{name}</span>:<span>{points}</span>
+          </div>
+        ))}
       </td>
-      <td>{defence}</td>
+      <td>{defense}</td>
       <td>
         <div className="row">
           <div className="col">
             <ImageUpload />
           </div>
           <div className="col">
-            <Button submit={console.log}>Save</Button>
+            <Button submit={saveRobot.bind(this, i, 1)}>Save</Button>
           </div>
         </div>
       </td>

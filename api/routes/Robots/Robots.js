@@ -10,7 +10,7 @@ module.exports = function Robots(model = RobotsModel) {
       .find(data)
       .then((robot_data) => {
         if (robot_data) cb(null, { robot_data, status: 200 });
-        else cb({ message: "robot_data not found", status: 404 });
+        else cb({ message: "robot not found", status: 404 });
       })
       .catch((error) => cb(error));
   };
@@ -26,18 +26,26 @@ module.exports = function Robots(model = RobotsModel) {
 
   robots.delete = (data, cb) => {
     const { _id } = data;
-    if (!_id) return cb({ status: 404, message: "Invalid options:)_id missing" });
+    if (!_id) return cb({ status: 400, message: "Invalid options:_id missing" });
     model
       .deleteOne({ _id })
       .then((doc) => cb(null, { status: 200 }))
       .catch((error) => cb(error));
   };
 
-  robots.update = (data, cb) => {
-    const { _id } = data;
+  robots.update = async (data, cb) => {
+    console.log("data---->", data);
+    const { _id, name, color, attacks } = data;
     if (!_id) return cb({ status: 404, message: "Invalid options:)_id missing" });
-    model
-      .findAndReplace({ _id }, data)
+    const robot = await model.findById(_id);
+
+    if (!robot) cb({ message: "robot not found", status: 404 });
+    robot.name = name;
+    robot.color = color;
+    robot.attacks = attacks;
+    console.log("data---->", data);
+    robot
+      .save()
       .then((update_robot) => cb(null, { update_robot, status: 200 }))
       .catch((error) => cb(error));
   };
