@@ -7,9 +7,9 @@ const ImageUpload = ({ submit, onchange, default_image }) => {
   };
 
   return (
-    <div className={`image-uploader`}>
+    <div className={`image-upload`}>
       <img src={default_image || placeholderImg} alt="upload icon" />
-      <input type="file" onChange={onchange} />
+      {/* <input type="file" onChange={onchange} /> */}
     </div>
   );
 };
