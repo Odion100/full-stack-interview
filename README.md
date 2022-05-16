@@ -1,5 +1,5 @@
 # full-stack-interview
-This is the results of my full-stack-interview test. The instructions pertaining to the full-stack-interview test can be seen below.
+This is the results of my full-stack-interview test. The instructions to setup and run this project can be seen directly below. The instructions pertaining to the full-stack-interview test can be found after that.
 
 
 ## Setup
@@ -9,7 +9,7 @@ This is the results of my full-stack-interview test. The instructions pertaining
 `npm install`
 
  add `.env` file with the following in the root directory : `MONGODB_PASSWORD=1cuUE6OArJK8FQ9C`
- **Note:** I've temporarily setup a MongoDB the will allow access for one week
+ **Note:** I've temporarily setup a MongoDB database that will allow access for one week
  
 ### Run:
 
