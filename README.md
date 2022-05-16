@@ -18,6 +18,11 @@ This is the results of my full-stack-interview test. The instructions to setup a
 App: `localhost:3000`
 API `localhost:3001`
 
+### Test Hints
+
+1. Use 'Add Robot' button to Add robots
+2. Robot can be edited in the table at all times
+3. select two robots to make the Battle! button appear
 
 
 
