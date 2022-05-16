@@ -10,7 +10,7 @@ const Selector = ({ options = [], values = [], selected_option, onSelect, contro
       value={controlledOption}
     >
       {options.map((option, i) => (
-        <option key={i} value={values[i] || i}>
+        <option key={i} value={option}>
           {option}
         </option>
       ))}
