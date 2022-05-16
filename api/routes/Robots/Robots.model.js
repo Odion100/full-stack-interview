@@ -8,11 +8,12 @@ module.exports = model(
     _id: Schema.Types.ObjectId,
     name: { type: String, required },
     color: { type: String, required },
-    attack: {
-      name: { type: String, required },
-      points: { type: String, required },
-      pattern: [{ type: Number, required }],
-    },
+    attacks: [
+      {
+        name: { type: String, required },
+        points: { type: String, required },
+      },
+    ],
     defense: { type: Number, required },
   })
 );
