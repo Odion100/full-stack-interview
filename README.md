@@ -21,8 +21,8 @@ API `localhost:3001`
 ### Test Hints
 
 1. Use 'Add Robot' button to Add robots
-2. Robot can be edited in the table at all times
-3. select two robots to make the Battle! button appear
+2. Robots can be edited in the table at all times
+3. select two robots to make the 'Battle!' button appear
 
 
 
