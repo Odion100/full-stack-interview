@@ -40,7 +40,18 @@ const RobotsTable = () => {
     });
     updateRobotData(data);
   };
+  const deleterRobot = (_id) => {
+    request(
+      { url: "http://localhost:3001/robots", method: "DELETE", body: { _id }, json: true },
+      (err, res, body) => {
+        if (err) console.log(err);
+        else if (res.statusCode >= 400) console.log(body);
+        else getRobots();
 
+        console.log(body);
+      }
+    );
+  };
   const updateName = (i, e) => {
     const updated_data = robot_data.splice(0);
     updated_data[i].name = e.target.value;
@@ -81,6 +92,7 @@ const RobotsTable = () => {
             saveRobot={saveRobot}
             updateName={updateName}
             updateColor={updateColor}
+            deleterRobot={deleterRobot}
             i={i}
             key={i}
           />
@@ -100,6 +112,8 @@ const TableRowEditor = ({
   saveRobot,
   updateName,
   updateColor,
+  deleterRobot,
+  _id,
 }) => {
   color = color || color_options[0];
   return (
@@ -127,6 +141,9 @@ const TableRowEditor = ({
           </div>
           <div className="col">
             <Button submit={saveRobot.bind(this, i, 1)}>Save</Button>
+          </div>
+          <div className="col">
+            {_id && <Button submit={deleterRobot.bind(this, _id)}>Delete</Button>}
           </div>
         </div>
       </td>
