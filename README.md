@@ -9,7 +9,7 @@ This is the results of my full-stack-interview test. The instructions pertaining
 `npm install`
 
  add `.env` file with the following in the root directory : `MONGODB_PASSWORD=1cuUE6OArJK8FQ9C`
- **Note:** I temporarily setup a MongoDB the will allow access for one week
+ **Note:** I've temporarily setup a MongoDB the will allow access for one week
  
 ### Run:
 
