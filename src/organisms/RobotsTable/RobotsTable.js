@@ -123,7 +123,7 @@ const TableRowEditor = ({
       <td>
         <div className="row">
           <div className="col">
-            <ImageUpload />
+            <ImageUpload color={color} />
           </div>
           <div className="col">
             <Button submit={saveRobot.bind(this, i, 1)}>Save</Button>
