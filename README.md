@@ -1,6 +1,25 @@
 # full-stack-interview
+This is the results of my full-stack-interview test. The instructions pertaining to the full-stack-interview test can be seen below.
 
-## Description
+
+## Setup
+
+### Install dependencies:
+
+`npm install`
+
+### Run:
+
+`npm run start`
+
+App: `localhost:3000`
+API `localhost:3001`
+
+
+
+
+---
+## full-stack-interview Description
 
 Time limit: 4 hours
 
