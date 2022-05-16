@@ -29,12 +29,12 @@ router.put("/robots", function (req, res, next) {
   };
 
   if (body._id) Robots.update(body, cb);
-  else Robots.add(body);
+  else Robots.add(body, cb);
 });
 
 router.delete("/robots", function (req, res, next) {
   const { body } = req;
-  Robots.find(body, (error, results) => {
+  Robots.delete(body, (error, results) => {
     if (error) {
       error.status = error.status || 500;
       res.status(error.status).json(error);
