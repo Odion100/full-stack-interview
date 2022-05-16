@@ -3,6 +3,7 @@ import request from "request";
 import Textbox from "../../atoms/Textbox/Textbox";
 import Button from "../../atoms/Botton/Button";
 import Selector from "../../atoms/Selector/Selector";
+import ImageUpload from "../../atoms/ImageUpload/ImageUpload";
 import "./styles.scss";
 import { color_options, attack_options } from "../../App.config";
 const RobotsTable = () => {
@@ -28,7 +29,7 @@ const RobotsTable = () => {
   const headers = [
     { name: "Name" },
     { name: "Color" },
-    { name: "Attack" },
+    { name: "Attacks" },
     { name: "Defence" },
     { name: <Button submit={addRow}>Add Robot</Button> },
   ];
@@ -87,8 +88,14 @@ const TableRowEditor = ({ name, color, attacks, defence, image, i }) => {
       </td>
       <td>{defence}</td>
       <td>
-        <input type="file" />
-        <Button submit={console.log}>Save</Button>
+        <div className="row">
+          <div className="col">
+            <ImageUpload />
+          </div>
+          <div className="col">
+            <Button submit={console.log}>Save</Button>
+          </div>
+        </div>
       </td>
     </tr>
   );
