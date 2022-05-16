@@ -1,17 +1,10 @@
 import React from "react";
 import "./styles.scss";
 
-const Selector = ({
-  options = [],
-  values = [],
-  selected_option,
-  onSelect,
-  classname,
-  controlledOption,
-}) => {
+const Selector = ({ options = [], values = [], selected_option, onSelect, controlledOption }) => {
   return (
     <select
-      className={classname}
+      className={"selector"}
       defaultValue={selected_option}
       onChange={onSelect}
       value={controlledOption}
