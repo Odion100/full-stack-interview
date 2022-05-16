@@ -4,15 +4,16 @@ const { Types } = require("mongoose");
 module.exports = function Robots(model = RobotsModel) {
   const robots = {};
 
-  robots.find = ({ _id }, cb) => {
-    const data = _id ? { _id } : null;
+  robots.find = ({ _id, ids }, cb) => {
+    const query = _id ? { _id } : ids ? { _id: { $in: ids.split(",") } } : null;
+    console.log(query, _id, ids);
     model
-      .find(data)
+      .find(query)
       .then((robot_data) => {
-        if (robot_data) cb(null, { robot_data, status: 200 });
-        else cb({ message: "robot not found", status: 404 });
+        if (robot_data.length > 0) cb(null, { robot_data, status: 200 });
+        else cb({ message: "robots not found", status: 404 });
       })
-      .catch((error) => cb(error));
+      .catch((error) => cb({ ...error, message: "robots not found", status: 404 }));
   };
 
   robots.add = (data, cb) => {
@@ -34,7 +35,6 @@ module.exports = function Robots(model = RobotsModel) {
   };
 
   robots.update = async (data, cb) => {
-    console.log("data---->", data);
     const { _id, name, color, attacks } = data;
     if (!_id) return cb({ status: 404, message: "Invalid options:)_id missing" });
     const robot = await model.findById(_id);
@@ -43,7 +43,6 @@ module.exports = function Robots(model = RobotsModel) {
     robot.name = name;
     robot.color = color;
     robot.attacks = attacks;
-    console.log("data---->", data);
     robot
       .save()
       .then((update_robot) => cb(null, { update_robot, status: 200 }))
