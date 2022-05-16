@@ -4,16 +4,18 @@ import Textbox from "../../atoms/Textbox/Textbox";
 import Button from "../../atoms/Botton/Button";
 import Selector from "../../atoms/Selector/Selector";
 import ImageUpload from "../../atoms/ImageUpload/ImageUpload";
+import Link from "../../atoms/Link/Link";
 import "./styles.scss";
 import { color_options, attack_options } from "../../App.config";
 const RobotsTable = () => {
-  const [robot_data, updateRobotData] = useState([]);
+  const [robot_data, setRobotData] = useState([]);
+  const [selected_bots, setSelectedBots] = useState([]);
 
   const getRobots = () => {
     request({ url: "http://localhost:3001/robots", json: true }, (err, res, body) => {
       if (err) console.log(err);
       else if (res.statusCode >= 400) console.log(body);
-      else updateRobotData(body.robot_data || []);
+      else setRobotData(body.robot_data || []);
       console.log(body);
     });
   };
@@ -38,7 +40,7 @@ const RobotsTable = () => {
       defense: 1000,
       color: "red",
     });
-    updateRobotData(data);
+    setRobotData(data);
   };
   const deleterRobot = (_id) => {
     request(
@@ -55,13 +57,20 @@ const RobotsTable = () => {
   const updateName = (i, e) => {
     const updated_data = robot_data.splice(0);
     updated_data[i].name = e.target.value;
-    updateRobotData(updated_data);
+    setRobotData(updated_data);
   };
   const updateColor = (i, e) => {
     const updated_data = robot_data.splice(0);
     updated_data[i].color = e.target.value;
     updated_data[i].attacks = attack_options.filter((attack) => attack.color === e.target.value);
-    updateRobotData(updated_data);
+    setRobotData(updated_data);
+  };
+  const selectBot = (i, e) => {
+    const updated_data = robot_data.splice(0);
+    updated_data[i].selected = !updated_data[i].selected;
+    setRobotData(updated_data);
+    const selected = updated_data.filter(({ selected }) => selected);
+    setSelectedBots(selected);
   };
 
   useEffect(() => {
@@ -75,30 +84,42 @@ const RobotsTable = () => {
     { name: "Defense" },
     { name: <Button submit={addRow}>Add Robot</Button> },
   ];
-  console.log("robot data", robot_data);
+  console.log("robot data", robot_data, selected_bots);
+
   return (
-    <table className={`data-table`}>
-      <thead>
-        <tr>
-          {headers.map(({ name }, i) => (
-            <th key={i}>{name}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {robot_data.map((robot, i) => (
-          <TableRowEditor
-            {...robot}
-            saveRobot={saveRobot}
-            updateName={updateName}
-            updateColor={updateColor}
-            deleterRobot={deleterRobot}
-            i={i}
-            key={i}
+    <div className="robot-table">
+      <div className="robot-table__battle-link">
+        {selected_bots.length === 2 && (
+          <Link
+            link={`/battle-arena/${selected_bots[0]._id}/${selected_bots[1]._id}`}
+            text={"Battle!"}
           />
-        ))}
-      </tbody>
-    </table>
+        )}
+      </div>
+      <table className={`robot-table__table`}>
+        <thead>
+          <tr>
+            {headers.map(({ name }, i) => (
+              <th key={i}>{name}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {robot_data.map((robot, i) => (
+            <TableRowEditor
+              {...robot}
+              saveRobot={saveRobot}
+              updateName={updateName}
+              updateColor={updateColor}
+              deleterRobot={deleterRobot}
+              selectBot={selectBot}
+              i={i}
+              key={i}
+            />
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
@@ -113,7 +134,9 @@ const TableRowEditor = ({
   updateName,
   updateColor,
   deleterRobot,
+  selectBot,
   _id,
+  seleted,
 }) => {
   color = color || color_options[0];
   return (
@@ -144,6 +167,9 @@ const TableRowEditor = ({
           </div>
           <div className="col">
             {_id && <Button submit={deleterRobot.bind(this, _id)}>Delete</Button>}
+          </div>
+          <div className="col">
+            <input type="checkbox" defaultChecked={seleted} onChange={selectBot.bind(this, i)} />
           </div>
         </div>
       </td>
