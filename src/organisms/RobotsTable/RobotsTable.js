@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import request from "request";
 import Textbox from "../../atoms/Textbox/Textbox";
 import Button from "../../atoms/Botton/Button";
+import Selector from "../../atoms/Selector/Selector";
 import "./styles.scss";
-
+import { color_options, attack_options } from "../../App.config";
 const RobotsTable = () => {
   const [robot_data, updateRobotData] = useState([]);
 
@@ -16,7 +17,7 @@ const RobotsTable = () => {
     });
   };
   const addRow = () => {
-    const data = [{ edit_mode: true, attacks: [] }, ...robot_data];
+    const data = [{ edit_mode: true, attacks: [], defence: 1000 }, ...robot_data];
     updateRobotData(data);
   };
 
@@ -67,14 +68,28 @@ const TableRow = ({ name, color, attacks, defence, image, i }) => (
     </td>
   </tr>
 );
-const TableRowEditor = ({ name, color, attack, defence, image, i }) => {
+const TableRowEditor = ({ name, color, attacks, defence, image, i }) => {
+  color = color || color_options[0];
   return (
     <tr key={i}>
       <td>{<Textbox />}</td>
-      <td>{color}</td>
-      <td>{attack}</td>
+      <td>
+        <Selector options={color_options} selected_option={color} />
+      </td>
+      <td>
+        {attack_options
+          .filter((attack) => attack.color === color)
+          .map(({ name, points }, i) => (
+            <div key={i}>
+              <span>{name}</span>:<span>{points}</span>
+            </div>
+          ))}
+      </td>
       <td>{defence}</td>
-      <td>{image}</td>
+      <td>
+        <input type="file" />
+        <Button submit={console.log}>Save</Button>
+      </td>
     </tr>
   );
 };

@@ -17,7 +17,7 @@ const Selector = ({
       value={controlledOption}
     >
       {options.map((option, i) => (
-        <option key={i} value={values[i]}>
+        <option key={i} value={values[i] || i}>
           {option}
         </option>
       ))}

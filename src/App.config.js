@@ -1,4 +1,4 @@
-const attacks = [
+export const attack_options = [
   {
     name: "Super Nova Blast",
     points: 150,
@@ -45,3 +45,7 @@ const attacks = [
     color: "blue",
   },
 ];
+
+export const color_options = ["red", "blue", "black"];
+
+export default { attack_options, color_options };
