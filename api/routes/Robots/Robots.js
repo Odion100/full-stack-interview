@@ -24,9 +24,23 @@ module.exports = function Robots(model = RobotsModel) {
       .catch((error) => cb({ error, status: 400, message: "Failed to create new robot" }));
   };
 
-  robots.delete = (data, cb) => {};
+  robots.delete = (data, cb) => {
+    const { _id } = data;
+    if (!_id) return cb({ status: 404, message: "Invalid options:)_id missing" });
+    model
+      .deleteOne({ _id })
+      .then((doc) => cb(null, { status: 200 }))
+      .catch((error) => cb(error));
+  };
 
-  robots.update = (data, cb) => {};
+  robots.update = (data, cb) => {
+    const { _id } = data;
+    if (!_id) return cb({ status: 404, message: "Invalid options:)_id missing" });
+    model
+      .findAndReplace({ _id }, data)
+      .then((update_robot) => cb(null, { update_robot, status: 200 }))
+      .catch((error) => cb(error));
+  };
 
   return robots;
 };

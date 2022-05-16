@@ -17,6 +17,17 @@ const RobotsTable = () => {
       console.log(body);
     });
   };
+  const saveRobot = (i, e) => {
+    request(
+      { url: "http://localhost:3001/robots", method: "PUT", body: robot_data[i] },
+      (err, res, body) => {
+        if (err) console.log(err);
+        else if (res.statusCode >= 400) console.log(body);
+        else updateRobotData(body.robot_data || []);
+        console.log(body);
+      }
+    );
+  };
   const addRow = () => {
     const data = [{ edit_mode: true, attacks: [], defence: 1000 }, ...robot_data];
     updateRobotData(data);
@@ -45,7 +56,11 @@ const RobotsTable = () => {
       </thead>
       <tbody>
         {robot_data.map((robot, i) =>
-          robot.edit_mode ? <TableRowEditor {...robot} key={i} /> : <TableRow {...robot} key={i} />
+          robot.edit_mode ? (
+            <TableRowEditor {...robot} saveRobot={saveRobot} key={i} />
+          ) : (
+            <TableRow {...robot} key={i} />
+          )
         )}
       </tbody>
     </table>
@@ -69,13 +84,17 @@ const TableRow = ({ name, color, attacks, defence, image, i }) => (
     </td>
   </tr>
 );
-const TableRowEditor = ({ name, color, attacks, defence, image, i }) => {
+const TableRowEditor = ({ name, color, attacks, defence, image, i, saveRobot }) => {
   color = color || color_options[0];
   return (
     <tr key={i}>
       <td>{<Textbox />}</td>
       <td>
-        <Selector options={color_options} selected_option={color} />
+        <Selector
+          options={color_options}
+          selected_option={color}
+          onSelect={saveRobot.bind(this, i, 1)}
+        />
       </td>
       <td>
         {attack_options
