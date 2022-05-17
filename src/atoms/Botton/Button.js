@@ -1,11 +1,11 @@
 import React from "react";
 import "./styles.scss";
 
-const Button = ({ link, children, submit }) => {
+const Button = ({ children, submit }) => {
   return (
-    <a href={`${link ? link : "#"}`} className="button" onClick={submit}>
+    <button className="button" onClick={submit}>
       {children}
-    </a>
+    </button>
   );
 };
 
