@@ -21,8 +21,8 @@ API `localhost:3001`
 ### Test Hints
 
 1. Use 'Add Robot' button to Add robots
-2. Robots can be edited in the table at all times
-3. select two robots to make the 'Battle!' button appear
+2. Robots color can be edited in the table at all times which will modify defense and attacks.
+3. Select two robots to make the 'Battle!' button appear
 4. Click the 'Battle' button to navigate to the Battle Page
 5. Click the 'Fight!' button to generate random battle results
 
