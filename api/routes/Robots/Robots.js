@@ -35,7 +35,7 @@ module.exports = function Robots(model = RobotsModel) {
   };
 
   robots.update = async (data, cb) => {
-    const { _id, name, color, attacks } = data;
+    const { _id, name, color, attacks, defense } = data;
     if (!_id) return cb({ status: 404, message: "Invalid options:)_id missing" });
     const robot = await model.findById(_id);
 
@@ -43,6 +43,7 @@ module.exports = function Robots(model = RobotsModel) {
     robot.name = name;
     robot.color = color;
     robot.attacks = attacks;
+    robot.defense = defense;
     robot
       .save()
       .then((update_robot) => cb(null, { update_robot, status: 200 }))
