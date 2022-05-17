@@ -19,25 +19,25 @@ const cb = (req, res, error, results) => {
 
 router.get("/robots", function (req, res, next) {
   const { query } = req;
-  Robots.find(query, cb.bind(this, req, res));
+  Robots.find(query, cb.bind(null, req, res));
 });
 router.put("/robots", function (req, res, next) {
   const { body } = req;
-  if (body._id) Robots.update(body, cb.bind(this, req, res));
-  else Robots.add(body, cb.bind(this, req, res));
+  if (body._id) Robots.update(body, cb.bind(null, req, res));
+  else Robots.add(body, cb.bind(null, req, res));
 });
 
 router.delete("/robots", function (req, res, next) {
   const { body } = req;
-  Robots.delete(body, cb.bind(this, req, res));
+  Robots.delete(body, cb.bind(null, req, res));
 });
 
 router.get("/battles", function (req, res, next) {
   const { query } = req;
-  Battles.find(query, cb.bind(this, req, res));
+  Battles.find(query, cb.bind(null, req, res));
 });
 router.put("/battles", function (req, res, next) {
   const { body } = req;
-  Battles.add(body, cb.bind(this, req, res));
+  Battles.add(body, cb.bind(null, req, res));
 });
 module.exports = router;
