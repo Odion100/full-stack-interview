@@ -10,57 +10,34 @@ mongoose
 
 const express = require("express");
 const router = express.Router();
+const cb = (req, res, error, results) => {
+  if (error) {
+    error.status = error.status || 500;
+    res.status(error.status).json(error);
+  } else res.json(results);
+};
 
 router.get("/robots", function (req, res, next) {
   const { query } = req;
-  Robots.find(query, (error, results) => {
-    if (error) {
-      error.status = error.status || 500;
-      res.status(error.status).json(error);
-    } else res.json(results);
-  });
+  Robots.find(query, cb.bind(this, req, res));
 });
 router.put("/robots", function (req, res, next) {
   const { body } = req;
-  const cb = (error, results) => {
-    if (error) {
-      error.status = error.status || 500;
-      res.status(error.status).json(error);
-    } else res.json(results);
-  };
-
-  if (body._id) Robots.update(body, cb);
-  else Robots.add(body, cb);
+  if (body._id) Robots.update(body, cb.bind(this, req, res));
+  else Robots.add(body, cb.bind(this, req, res));
 });
 
 router.delete("/robots", function (req, res, next) {
   const { body } = req;
-  Robots.delete(body, (error, results) => {
-    if (error) {
-      error.status = error.status || 500;
-      res.status(error.status).json(error);
-    } else res.json(results);
-  });
+  Robots.delete(body, cb.bind(this, req, res));
 });
 
 router.get("/battles", function (req, res, next) {
   const { query } = req;
-  Battles.find(query, (error, results) => {
-    if (error) {
-      error.status = error.status || 500;
-      res.status(error.status).json(error);
-    } else res.json(results);
-  });
+  Battles.find(query, cb.bind(this, req, res));
 });
 router.put("/battles", function (req, res, next) {
   const { body } = req;
-  const cb = (error, results) => {
-    if (error) {
-      error.status = error.status || 500;
-      res.status(error.status).json(error);
-    } else res.json(results);
-  };
-
-  Battles.add(body, cb);
+  Battles.add(body, cb.bind(this, req, res));
 });
 module.exports = router;
