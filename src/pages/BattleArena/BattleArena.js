@@ -9,8 +9,6 @@ const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - mi
 const BattleArena = () => {
   const { robot1, robot2 } = useParams();
   const [robots, setRobots] = useState([]);
-  const [robot1_attacks, setR1Attacks] = useState([]);
-  const [robot2_attacks, setR2Attacks] = useState([]);
   const [robot1_defense, setR1Defense] = useState(0);
   const [robot2_defense, setR2Defense] = useState(0);
   const [records, setRecords] = useState([]);
