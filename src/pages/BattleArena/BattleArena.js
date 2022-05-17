@@ -47,9 +47,9 @@ const BattleArena = () => {
       }
     );
   };
-  const saveBattle = () => {
+  const saveBattle = (battle_summary) => {
     request(
-      { url: `http://localhost:3001/battles`, method: "PUT", body: results, json: true },
+      { url: `http://localhost:3001/battles`, method: "PUT", body: battle_summary, json: true },
       (err, res, body) => {
         if (err) console.log(err);
         else if (res.statusCode >= 400) console.log(body);
@@ -68,7 +68,7 @@ const BattleArena = () => {
 
     setresults(battle_summary);
     console.log(battle_summary);
-    saveBattle();
+    saveBattle(battle_summary);
     getRecords();
   };
 
@@ -118,7 +118,7 @@ const BattleArena = () => {
                   <ImageUpload color={robots[1].color} />
                 </div>
                 <div className="row">
-                  <span>HP:{robot1_defense}</span>
+                  <span>HP:{robot2_defense}</span>
                 </div>
               </>
             )}
