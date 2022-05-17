@@ -7,6 +7,8 @@ import ImageUpload from "../../atoms/ImageUpload/ImageUpload";
 import Link from "../../atoms/Link/Link";
 import "./styles.scss";
 import { color_options, attack_options } from "../../App.config";
+const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+
 const RobotsTable = () => {
   const [robot_data, setRobotData] = useState([]);
   const [selected_bots, setSelectedBots] = useState([]);
@@ -37,7 +39,7 @@ const RobotsTable = () => {
     data.push({
       edit_mode: true,
       attacks: attack_options.filter((attack) => attack.color === "red"),
-      defense: 1000,
+      defense: 1000 + randomIntFromInterval(500, 1000),
       color: "red",
     });
     setRobotData(data);
@@ -63,6 +65,7 @@ const RobotsTable = () => {
     const updated_data = robot_data.splice(0);
     updated_data[i].color = e.target.value;
     updated_data[i].attacks = attack_options.filter((attack) => attack.color === e.target.value);
+    updated_data[i].defense = 1000 + randomIntFromInterval(500, 1000);
     setRobotData(updated_data);
   };
   const selectBot = (i, e) => {
