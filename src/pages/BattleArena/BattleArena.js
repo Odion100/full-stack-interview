@@ -53,7 +53,7 @@ const BattleArena = () => {
       (err, res, body) => {
         if (err) console.log(err);
         else if (res.statusCode >= 400) console.log(body);
-
+        else getRecords();
         console.log(body);
       }
     );
